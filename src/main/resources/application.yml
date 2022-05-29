@@ -1,0 +1,15 @@
+job:
+  resource:
+    path: "datafiles/input.xlsx"
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+avg-sales:
+  start: 0.3
+  end: 0.7
