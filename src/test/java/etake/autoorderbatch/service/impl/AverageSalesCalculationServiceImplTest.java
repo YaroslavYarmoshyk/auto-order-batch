@@ -1,9 +1,13 @@
 package etake.autoorderbatch.service.impl;
 
 import etake.autoorderbatch.dto.NameValuePair;
+import etake.autoorderbatch.service.AttributeService;
 import etake.autoorderbatch.service.AverageSalesCalculationService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,32 +22,32 @@ import static etake.autoorderbatch.util.Constants.SALES_CSKU_END;
 import static etake.autoorderbatch.util.Constants.SALES_CSKU_START;
 import static etake.autoorderbatch.util.Constants.SALES_SKU_END;
 import static etake.autoorderbatch.util.Constants.SALES_SKU_START;
-import static etake.autoorderbatch.util.Constants.SKU;
 
+@SpringBootTest(classes = AverageSalesCalculationService.class)
 class AverageSalesCalculationServiceImplTest {
-    private final AverageSalesCalculationService averageSalesCalculationService;
+    @Value("${auto-order-system.avg-sales.start}")
+    private Double startTrend;
+    @Value("${auto-order-system.avg-sales.end}")
+    private Double endTrend;
+    private AverageSalesCalculationService averageSalesCalculationService;
+    private AttributeService attributeService;
 
-    AverageSalesCalculationServiceImplTest(AverageSalesCalculationService service) {
-        this.averageSalesCalculationService = service;
+    @BeforeEach
+    void setUp() {
+//        attributeService = new AttributeServiceImpl(attributes);
+//        averageSalesCalculationService = new AverageSalesCalculationServiceImpl(attributeService);
+//        ReflectionTestUtils.setField(averageSalesCalculationService, "startTrend", startTrend);
+//        ReflectionTestUtils.setField(averageSalesCalculationService, "endTrend", endTrend);
     }
 
-
     @Test()
-    @DisplayName("Test average sales calculation")
-    void testCalculate_bothValues() {
-        Map<String, String> settingMap = new HashMap<>();
-        settingMap.put(SALES_SKU_START, "6");
-        settingMap.put(SALES_SKU_END, "3");
-        settingMap.put(SALES_CSKU_START, "1");
-        settingMap.put(SALES_CSKU_END, "");
-        settingMap.put(DAY_ON_STOCK_SKU_START, "5");
-        settingMap.put(DAY_ON_STOCK_SKU_END, "");
-        settingMap.put(DAY_ON_STOCK_CSKU_START, "3");
-        settingMap.put(DAY_ON_STOCK_CSKU_END, "2");
-
-        Set<NameValuePair<String, String>> attributes = getAttributes(settingMap);
-
-        Double calculateAvgSales = averageSalesCalculationService.calculateAvgSales(attributes, SKU);
+    @DisplayName("Test average sales calculation SKU")
+    void testCalculate_bothValues_SKU() {
+//        Set<NameValuePair<String, String>> attributes = getAttributes(getDefaultSettingMap());
+//
+//        BigDecimal actual = averageSalesCalculationService.calculateAvgSales(attributes, SKU);
+//
+//        assertEquals(BigDecimal.valueOf(1.41), actual);
 
 
     }
@@ -56,6 +60,20 @@ class AverageSalesCalculationServiceImplTest {
         }
 
         return attributes;
+    }
+
+    private Map<String, String> getDefaultSettingMap() {
+        Map<String, String> settingMap = new HashMap<>();
+        settingMap.put(SALES_SKU_START, "6");
+        settingMap.put(SALES_SKU_END, "3");
+        settingMap.put(SALES_CSKU_START, "1");
+        settingMap.put(SALES_CSKU_END, "");
+        settingMap.put(DAY_ON_STOCK_SKU_START, "5");
+        settingMap.put(DAY_ON_STOCK_SKU_END, "2");
+        settingMap.put(DAY_ON_STOCK_CSKU_START, "3");
+        settingMap.put(DAY_ON_STOCK_CSKU_END, "2");
+
+        return settingMap;
     }
 
 

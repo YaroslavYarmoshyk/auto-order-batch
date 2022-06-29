@@ -3,6 +3,7 @@ package etake.autoorderbatch.dto.mapper;
 import etake.autoorderbatch.dto.NameValuePair;
 import etake.autoorderbatch.dto.PositionDTO;
 import etake.autoorderbatch.service.HeaderMapper;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.batch.extensions.excel.RowMapper;
 import org.springframework.batch.extensions.excel.support.rowset.RowSet;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static etake.autoorderbatch.util.Constants.ATTRIBUTES;
+import static etake.autoorderbatch.util.Constants.NULL_VALUE;
 
 public class ExcelRowMapper implements RowMapper<PositionDTO> {
     private final HeaderMapper headerMapper;
@@ -21,7 +23,7 @@ public class ExcelRowMapper implements RowMapper<PositionDTO> {
 
 
     @Override
-    public PositionDTO mapRow(RowSet rowSet) throws Exception {
+    public PositionDTO mapRow(RowSet rowSet) {
         PositionDTO positionDTO = new PositionDTO();
         positionDTO.setStore(getStore(rowSet.getCurrentRow()[1]));
         positionDTO.setCategory(rowSet.getCurrentRow()[2]);
@@ -40,7 +42,7 @@ public class ExcelRowMapper implements RowMapper<PositionDTO> {
         for (String attribute : ATTRIBUTES) {
 
             int attributeIndex = headers.get(attribute);
-            attributes.add(new NameValuePair<>(attribute, rowSet.getCurrentRow()[attributeIndex]));
+            attributes.add(new NameValuePair<>(attribute, getValue(rowSet.getCurrentRow()[attributeIndex])));
         }
 
         return attributes;
@@ -51,6 +53,10 @@ public class ExcelRowMapper implements RowMapper<PositionDTO> {
     }
 
     private String getStore(String store) {
-        return store.replaceAll("\\(торговий зал\\)", "");
+        return store.replaceAll(" \\(торговий зал\\)", "");
+    }
+
+    private String getValue(String value) {
+        return  value.equals(NULL_VALUE) ? Strings.EMPTY : value;
     }
 }

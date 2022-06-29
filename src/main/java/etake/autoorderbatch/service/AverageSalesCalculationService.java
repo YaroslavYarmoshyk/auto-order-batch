@@ -1,10 +1,8 @@
 package etake.autoorderbatch.service;
 
-import etake.autoorderbatch.dto.NameValuePair;
-
-import java.util.Set;
+import java.math.BigDecimal;
 
 public interface AverageSalesCalculationService {
-    Double calculateAvgSales(Set<NameValuePair<String, String>> attributes, String positionType);
+    BigDecimal calculateAvgSales(BigDecimal startSales, BigDecimal startDaysOnStock, BigDecimal endSales, BigDecimal endDaysOnStock);
 
 }
